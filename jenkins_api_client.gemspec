@@ -6,7 +6,7 @@
 
 Gem::Specification.new do |s|
   s.name = "jenkins_api_client"
-  s.version = "1.4.5.gdc1"
+  s.version = "1.4.5.gdc2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]

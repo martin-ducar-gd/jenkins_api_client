@@ -68,6 +68,7 @@ module JenkinsApi
       "http_open_timeout",
       "http_read_timeout",
       "ssl",
+      "ssl_verify",
       "follow_redirects",
       "identity_file",
       "cookies",
@@ -94,6 +95,7 @@ module JenkinsApi
     # @option args [String] :proxy_protocol the proxy protocol ('socks' or 'http' (defaults to HTTP)
     # @option args [String] :jenkins_path ("/") the optional context path for Jenkins
     # @option args [Boolean] :ssl (false) indicates if Jenkins is accessible over HTTPS
+    # @option args [Boolean] :ssl_verify (:peer) on of [:none, :peer, :fail_if_no_peer_cert, :client_once]
     # @option args [Boolean] :follow_redirects this argument causes the client to follow a redirect (jenkins can
     #   return a 30x when starting a build)
     # @option args [Fixnum] :timeout (120) This argument sets the timeout for operations that take longer (in seconds)
@@ -153,6 +155,7 @@ module JenkinsApi
       @http_open_timeout = DEFAULT_HTTP_OPEN_TIMEOUT unless @http_open_timeout
       @http_read_timeout = DEFAULT_HTTP_READ_TIMEOUT unless @http_read_timeout
       @ssl ||= false
+      @ssl_verify ||= :peer
       @proxy_protocol ||= 'http'
       HTTPI.adapter = :curb
 
@@ -315,6 +318,7 @@ module JenkinsApi
       http_prefix="http://"
       if @ssl
         http_prefix="https://"
+        request.auth.ssl.verify_mode = @ssl_verify
       end
 
       if @proxy_ip
